@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from typing import cast
 
@@ -13,7 +14,9 @@ for label_dir in sorted(dataset_dir.iterdir()):
     label = label_dir.name
     for img_file in sorted(label_dir.iterdir()):
         if img_file.is_file():
-            rows.append({"img_file_name": img_file.name, "label": label})
+            rows.append(
+                {"img_file_name": img_file.name, "label": label, "img_path": img_file}
+            )
 
 df = pd.DataFrame(rows)
 
@@ -31,8 +34,16 @@ val_df, test_df = (
 output_dir = Path(__file__).parent / "output"
 output_dir.mkdir(parents=True, exist_ok=True)
 
-splits = {"train": train_df, "val": val_df, "test": test_df}
+splits = {"Train": train_df, "Val": val_df, "Test": test_df}
 for split_name, split_df in splits.items():
-    output_path = output_dir / f"wacv2016_{split_name}.csv"
-    split_df.to_csv(output_path, index=False)
-    print(f"Saved {len(split_df)} rows to {output_path}")
+    split_img_dir = output_dir / split_name
+    split_img_dir.mkdir(parents=True, exist_ok=True)
+
+    for img_path in split_df["img_path"]:
+        shutil.copy(img_path, split_img_dir / Path(img_path).name)
+
+    csv_df = split_df.drop(columns=["img_path"])
+    output_path = output_dir / f"wacv2016_{split_name.lower()}.csv"
+    csv_df.to_csv(output_path, index=False)
+    print(f"Saved {len(csv_df)} rows to {output_path}")
+    print(f"Copied {len(split_df)} images to {split_img_dir}")
