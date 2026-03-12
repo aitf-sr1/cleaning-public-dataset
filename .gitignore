@@ -207,7 +207,7 @@ marimo/_lsp/
 __marimo__/
 
 # Dataset, Model, and output
-DAiSEE/DAiSEE/
-WACV2016/wacv2016/
+datasets/DAiSEE/DAiSEE/
+datasets/WACV2016/wacv2016/
 output/
 model/
