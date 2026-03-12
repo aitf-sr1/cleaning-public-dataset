@@ -15,10 +15,14 @@ LABEL_FILES = {
 
 def extract_engagement(csv_path: Path) -> pd.DataFrame:
     df = pd.read_csv(csv_path)
+
+    # change 0 into 1 so it can be merged with WACV2016
+    label = df["Engagement"].replace(0, 1)
+
     return pd.DataFrame(
         {
             "img_file_name": df["Image_Name"],
-            "label": df["Engagement"],
+            "label": label,
         }
     )
 
