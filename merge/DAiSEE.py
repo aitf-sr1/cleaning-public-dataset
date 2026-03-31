@@ -7,7 +7,7 @@ from pathlib import Path
 def main():
     script_dir = Path(__file__).parent.resolve()
     daisee_dir = script_dir.parent / "datasets" / "DAiSEE"
-    mediapipe_script = daisee_dir / "mediapipe-crop-and-labelv2.py"
+    mediapipe_script = daisee_dir / "mediapipe-crop-and-labelv3.py"
     output_source = daisee_dir / "output"
     output_dest = script_dir / "output"
 
