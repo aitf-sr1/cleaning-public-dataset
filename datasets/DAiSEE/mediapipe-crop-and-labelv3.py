@@ -157,6 +157,8 @@ def crop_faces_and_export_csv(
             if cropped_face.size == 0:
                 continue
 
+            cropped_face = cv2.resize(cropped_face, (224, 224))
+
             img_name = os.path.basename(img_path)
             final_img_name = f"face_{img_name}"
             cropped_filepath = os.path.join(split_output_folder, final_img_name)
